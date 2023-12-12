@@ -2,18 +2,36 @@
 #include<pthread.h>
 
 void* thrfun();
+int count;
+
 int main()
 {
-	pthread_t thread1;
-	pthread_create(&thread1,NULL,thrfun,NULL);
-	pthread_join(thread1,NULL);
-	printf("Thread ID:%ld\n",thread1);
-	//pthread_join(thread1,NULL);
-	return 0;
+        pthread_t thread[50];
+        int i;
+        for(i=0;i<50;i++)
+        {
+                pthread_create(&thread[i],NULL,thrfun,NULL);
+        }
+
+        for(i=0;i<50;i++)
+        {
+                pthread_join(thread[i],NULL);
+        }
+
+        printf("\nTotal count:%d\n",count);
+
 }
 
 void* thrfun()
 {
-	printf("Thread function\n");
-	return NULL;
+        int j;
+
+        for(j=0;j<1000;j++)
+        {
+                count++;
+                printf("%d\t\t",count);
+        }
+
+        printf("\n\n...................................\n");
 }
+
