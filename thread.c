@@ -3,10 +3,12 @@
 
 void* thrfun();
 int count;
+pthread_mutex_t mutex;
 
 int main()
 {
         pthread_t thread[50];
+        pthread_mutex_init(&mutex,NULL);
         int i;
         for(i=0;i<50;i++)
         {
@@ -18,6 +20,7 @@ int main()
                 pthread_join(thread[i],NULL);
         }
 
+        pthread_mutex_destroy(&mutex);
         printf("\nTotal count:%d\n",count);
 
 }
@@ -28,8 +31,10 @@ void* thrfun()
 
         for(j=0;j<1000;j++)
         {
+                pthread_mutex_lock(&mutex);
                 count++;
                 printf("%d\t\t",count);
+                pthread_mutex_unlock(&mutex);
         }
 
         printf("\n\n...................................\n");
